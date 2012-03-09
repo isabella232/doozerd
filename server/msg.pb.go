@@ -6,10 +6,9 @@ package server
 import proto "code.google.com/p/goprotobuf/proto"
 import "math"
 
-// Reference proto, math & os imports to suppress error if they are not otherwise used.
+// Reference proto and math imports to suppress error if they are not otherwise used.
 var _ = proto.GetString
 var _ = math.Inf
-var _ error
 
 type request_Verb int32
 
@@ -23,6 +22,7 @@ const (
 	request_WALK   request_Verb = 9
 	request_GETDIR request_Verb = 14
 	request_STAT   request_Verb = 16
+	request_SELF   request_Verb = 20
 	request_ACCESS request_Verb = 99
 )
 
@@ -36,6 +36,7 @@ var request_Verb_name = map[int32]string{
 	9:  "WALK",
 	14: "GETDIR",
 	16: "STAT",
+	20: "SELF",
 	99: "ACCESS",
 }
 var request_Verb_value = map[string]int32{
@@ -48,6 +49,7 @@ var request_Verb_value = map[string]int32{
 	"WALK":   9,
 	"GETDIR": 14,
 	"STAT":   16,
+	"SELF":   20,
 	"ACCESS": 99,
 }
 
@@ -114,29 +116,29 @@ func (x response_Err) String() string {
 }
 
 type request struct {
-	Tag              *int32        `protobuf:"varint,1,opt,name=tag" json:"tag"`
-	Verb             *request_Verb `protobuf:"varint,2,opt,name=verb,enum=server.request_Verb" json:"verb"`
-	Path             *string       `protobuf:"bytes,4,opt,name=path" json:"path"`
-	Value            []byte        `protobuf:"bytes,5,opt,name=value" json:"value"`
-	OtherTag         *int32        `protobuf:"varint,6,opt,name=other_tag" json:"other_tag"`
-	Offset           *int32        `protobuf:"varint,7,opt,name=offset" json:"offset"`
-	Rev              *int64        `protobuf:"varint,9,opt,name=rev" json:"rev"`
-	XXX_unrecognized []byte
+	Tag              *int32        `protobuf:"varint,1,opt,name=tag" json:"tag,omitempty"`
+	Verb             *request_Verb `protobuf:"varint,2,opt,name=verb,enum=server.request_Verb" json:"verb,omitempty"`
+	Path             *string       `protobuf:"bytes,4,opt,name=path" json:"path,omitempty"`
+	Value            []byte        `protobuf:"bytes,5,opt,name=value" json:"value,omitempty"`
+	OtherTag         *int32        `protobuf:"varint,6,opt,name=other_tag" json:"other_tag,omitempty"`
+	Offset           *int32        `protobuf:"varint,7,opt,name=offset" json:"offset,omitempty"`
+	Rev              *int64        `protobuf:"varint,9,opt,name=rev" json:"rev,omitempty"`
+	XXX_unrecognized []byte        `json:",omitempty"`
 }
 
 func (this *request) Reset()         { *this = request{} }
 func (this *request) String() string { return proto.CompactTextString(this) }
 
 type response struct {
-	Tag              *int32        `protobuf:"varint,1,opt,name=tag" json:"tag"`
-	Flags            *int32        `protobuf:"varint,2,opt,name=flags" json:"flags"`
-	Rev              *int64        `protobuf:"varint,3,opt,name=rev" json:"rev"`
-	Path             *string       `protobuf:"bytes,5,opt,name=path" json:"path"`
-	Value            []byte        `protobuf:"bytes,6,opt,name=value" json:"value"`
-	Len              *int32        `protobuf:"varint,8,opt,name=len" json:"len"`
-	ErrCode          *response_Err `protobuf:"varint,100,opt,name=err_code,enum=server.response_Err" json:"err_code"`
-	ErrDetail        *string       `protobuf:"bytes,101,opt,name=err_detail" json:"err_detail"`
-	XXX_unrecognized []byte
+	Tag              *int32        `protobuf:"varint,1,opt,name=tag" json:"tag,omitempty"`
+	Flags            *int32        `protobuf:"varint,2,opt,name=flags" json:"flags,omitempty"`
+	Rev              *int64        `protobuf:"varint,3,opt,name=rev" json:"rev,omitempty"`
+	Path             *string       `protobuf:"bytes,5,opt,name=path" json:"path,omitempty"`
+	Value            []byte        `protobuf:"bytes,6,opt,name=value" json:"value,omitempty"`
+	Len              *int32        `protobuf:"varint,8,opt,name=len" json:"len,omitempty"`
+	ErrCode          *response_Err `protobuf:"varint,100,opt,name=err_code,enum=server.response_Err" json:"err_code,omitempty"`
+	ErrDetail        *string       `protobuf:"bytes,101,opt,name=err_detail" json:"err_detail,omitempty"`
+	XXX_unrecognized []byte        `json:",omitempty"`
 }
 
 func (this *response) Reset()         { *this = response{} }
